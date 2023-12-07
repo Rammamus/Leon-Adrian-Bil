@@ -1,22 +1,24 @@
-#define IR_SENSOR_RIGHT 11
-#define IR_SENSOR_LEFT 12
+/*#define IR_SENSOR_RIGHT figure this out 
+#define IR_SENSOR_LEFT figure this out */
 #define MOTOR_SPEED 180
-
-
 
 //KOM IHÅG ATT ÄNDRA PINS
 
-
+//Light sensor
+int sensorLeft = 25;
+int sensorMLeft = 17;
+int sensorMRight = 27;
+int sensorRight = 14;
 
 //Right motor
-int enableRightMotor=6;
-int rightMotorPin1=7;
-int rightMotorPin2=8;
+int enableRightMotor=12;
+int rightMotorPin1=13;
+int rightMotorPin2=5;
 
 //Left motor
-int enableLeftMotor=5;
-int leftMotorPin1=9;
-int leftMotorPin2=10;
+int enableLeftMotor=18;
+int leftMotorPin1=23;
+int leftMotorPin2=19;
 
 void setup()
 {
@@ -26,7 +28,7 @@ void setup()
   //Below line is important to change the frequency of PWM signal on pin D5 and D6
   //Because of this, motor runs in controlled manner (lower speed) at high PWM value.
   //This sets frequecny as 7812.5 hz.
-  TCCR0B = TCCR0B & B11111000 | B00000010 ;
+ /* TCCR0B = TCCR0B & B11111000 | B00000010;*/
   
   // put your setup code here, to run once:
   pinMode(enableRightMotor, OUTPUT);
@@ -37,8 +39,10 @@ void setup()
   pinMode(leftMotorPin1, OUTPUT);
   pinMode(leftMotorPin2, OUTPUT);
 
-  pinMode(IR_SENSOR_RIGHT, INPUT);
-  pinMode(IR_SENSOR_LEFT, INPUT);
+  pinMode(sensorLeft, INPUT);
+  pinMode(sensorMLeft, INPUT);
+  pinMode(sensorMRight, INPUT);
+  pinMode(sensorRight, INPUT);
   rotateMotor(0,0);   
 }
 
@@ -46,8 +50,8 @@ void setup()
 void loop()
 {
 
-  int rightIRSensorValue = digitalRead(IR_SENSOR_RIGHT);
-  int leftIRSensorValue = digitalRead(IR_SENSOR_LEFT);
+  int rightIRSensorValue = digitalRead(sensorRight)|| digitalRead(sensorMRight);
+  int leftIRSensorValue = digitalRead(sensorLeft) || digitalRead(sensorMLeft);
 
   //If none of the sensors detects black line, then go straight
   if (rightIRSensorValue == LOW && leftIRSensorValue == LOW)
